@@ -56,7 +56,15 @@
         }
 
         #namebox {
-            background-color: #b3b3b3
+            background-color: #b3b3b3;
+            position: absolute;
+            bottom: 50px;
+        }
+
+        #namebutton {
+            position: absolute;
+            bottom: 50px;
+            left: 140px;
         }
     </style>
 </head>
@@ -64,8 +72,8 @@
 <body>
     <div id='playerCount'></div>
     <ul id="messages"></ul>
+    <input id='namebox' autocomplete="off" value='Enter Username' /><button id='namebutton'>Enter</button><br>
     <form action="">
-        <input id='namebox' autocomplete="off" value='Enter Username' />
         <input id="m" autocomplete="off" /><button>Send</button>
     </form>
     <script src='/socket.io/socket.io.js'></script>
@@ -73,19 +81,28 @@
     <script>
         $(function () {
             let socket = io();
-            $('form').submit((e) => {
+            $('form').submit((e) => { //form
                 e.preventDefault(); // stops page reloading
                 socket.emit('chat message', $('#m').val());
                 $('#m').val('');
                 return false;
             });
-            socket.on('chat message', (msg) => {
-                let name = $('#namebox').val();
-                if (!name) {
-                    name = "Mystery Boi";
-                }
-                $('#messages').append($('<li>').text(name + ": " + msg));
+
+            //nickname handler
+            $('#namebutton').click((e) => { //form
+                e.preventDefault(); // stops page reloading
+                console.log('sdfsdfsdfsf')
+                socket.emit('username', $('#namebox').val());
+                $('#namebox').val('');
+                return false;
             });
+
+
+            socket.on('chat message', (msg) => {
+                $('#messages').append($('<li>').text(msg.nick + ': ' + msg.msg));
+            });
+
+
             socket.on('user-connection', (msg) => {
                 $('#messages').append($('<li>').text(msg));
             })

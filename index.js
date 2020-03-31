@@ -3,6 +3,7 @@ let http = require('http').createServer(app);
 let io = require('socket.io')(http);
 let allClients = [];
 let PORT = process.env.PORT || 3000;
+nicknames = [];
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -12,7 +13,11 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
 
     //prompt for name
-
+    socket.on('username', (data, callback) => {
+        socket.nickname = data;
+        nicknames.push(socket.nickname);
+        console.log(nicknames);
+    });
 
     //connect
     console.log('A user has connected!');
@@ -35,7 +40,7 @@ io.on('connection', (socket) => {
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
-        io.emit('chat message', msg);
+        io.emit('chat message', { msg: msg, nick: socket.nickname });
     })
 });
 
