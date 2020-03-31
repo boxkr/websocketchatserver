@@ -2,6 +2,9 @@
   "name": "sockettest",
   "version": "1.0.0",
   "description": "Chat applicaiton using websockets",
+  "engines": {
+    "node": "11.11.0"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
