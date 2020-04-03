@@ -110,7 +110,12 @@
                 $('#messages').append($('<li>').text(msg));
             })
             socket.on('playerCount', (msg) => {
-                $('#playerCount').text(msg + " People Online");
+                if (msg == 1) {
+                    $('#playerCount').text(msg + " Person Online");
+                } else {
+                    $('#playerCount').text(msg + " People Online");
+                }
+
             })
 
         });
